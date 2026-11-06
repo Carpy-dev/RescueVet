@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla: peso actual, estado y gráfico simple del historial de peso. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             xmlns:models="clr-namespace:Demo.Models"
+             x:Class="Demo.Views.MiMascota.CrecimientoPage"
+             x:DataType="models:Mascota"
+             Title="Crecimiento"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,16,20,28" Spacing="18">
+
+            <controls:PageHeader Titulo="Crecimiento" Subtitulo="La evolución del peso de tu mascota."
+                                 Imagen="rv_masc_ic_crec.png" AnchoImagen="70" />
+
+            <!-- Peso actual -->
+            <Border Style="{StaticResource Banner}" BackgroundColor="#FEF1F4">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout>
+                        <Label Text="Peso actual" Style="{StaticResource SmallText}" FontSize="13" />
+                        <Label Text="{Binding PesoActual}" Style="{StaticResource PageTitle}" FontSize="34" />
+                        <Label Text="{Binding RangoPeso, StringFormat='Rango ideal para su raza: {0}'}" Style="{StaticResource CardDesc}" />
+                    </VerticalStackLayout>
+                    <Border Grid.Column="1" Style="{StaticResource Tag}" BackgroundColor="{StaticResource GreenBg}" VerticalOptions="Start">
+                        <Label Text="{Binding EstadoPeso}" Style="{StaticResource TagText}" FontSize="13" TextColor="{StaticResource Green}" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Label Text="Historial de peso" Style="{StaticResource SectionTitle}" Margin="0,4,0,-6" />
+
+            <Button Text="Registrar peso" Style="{StaticResource PrimaryButton}" Clicked="OnAgregarClicked" />
+
+            <!-- Gráfico de barras simple -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout x:Name="Barras" Spacing="14">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:Peso">
+                            <Grid ColumnDefinitions="70,*,Auto" ColumnSpacing="10">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnItemTapped" />
+                                </Grid.GestureRecognizers>
+                                <Label Text="{Binding FechaTexto}" Style="{StaticResource SmallText}" FontSize="13" />
+                                <Grid Grid.Column="1" HeightRequest="14" VerticalOptions="Center">
+                                    <BoxView Color="{StaticResource Line}" CornerRadius="7" />
+                                    <BoxView Color="{StaticResource Primary}" CornerRadius="7"
+                                             WidthRequest="{Binding AnchoBarra}" HorizontalOptions="Start" />
+                                </Grid>
+                                <Label Grid.Column="2" Text="{Binding KgTexto}" FontFamily="NunitoBold" FontSize="14" VerticalOptions="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

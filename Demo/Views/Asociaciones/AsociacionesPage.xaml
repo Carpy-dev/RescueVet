@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla: lista de asociaciones cercanas, con categorías y un banner de donación. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             xmlns:models="clr-namespace:Demo.Models"
+             x:Class="Demo.Views.Asociaciones.AsociacionesPage"
+             Title="Asociaciones"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,16,20,28" Spacing="20">
+
+            <controls:PageHeader Titulo="Asociaciones de animales"
+                                 Subtitulo="Encuentra asociaciones cerca de ti que rescatan y ayudan animales."
+                                 Imagen="rv_ilus_asoc.png" />
+
+            <!-- ===== Asociaciones cerca de ti ===== -->
+            <Label Text="Asociaciones cerca de ti" Style="{StaticResource SectionTitle}" Margin="0,4,0,-8" />
+
+            <CarouselView x:Name="Carrusel" HeightRequest="400" Loop="False"
+                          PeekAreaInsets="0,0,90,0" IndicatorView="{x:Reference Indicador}"
+                          Margin="-4,0,-20,0">
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="0"
+                                       SnapPointsType="MandatorySingle" SnapPointsAlignment="Start" />
+                </CarouselView.ItemsLayout>
+                <CarouselView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Asociacion">
+                        <Border Style="{StaticResource CardFlush}" Margin="4,4,10,14" VerticalOptions="Start">
+                            <Grid RowDefinitions="180,Auto">
+                                <Image Source="{Binding FotoUrl}" Aspect="AspectFill">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnVerPerfilTapped" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <!-- Favorito -->
+                                <Border Style="{StaticResource HeartCircle}" Margin="0,12,12,0">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnFavoritoTapped" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="&#xE87E;" Style="{StaticResource Icono}" FontSize="24" TextColor="{StaticResource TextDark}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding EsFavorito}" Value="True">
+                                                <Setter Property="Text" Value="&#xE87D;" />
+                                                <Setter Property="TextColor" Value="{StaticResource Red}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </Border>
+
+                                <VerticalStackLayout Grid.Row="1" Padding="16,10,16,16" Spacing="10">
+                                    <Grid ColumnDefinitions="70,*">
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                            <Label Text="{Binding Nombre}" Style="{StaticResource CardTitle}" FontSize="17" />
+                                            <Label Style="{StaticResource SmallText}">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Distancia}" />
+                                                        <Span Text=" " />
+                                                        <Span Text="&#xE55F;" FontFamily="MaterialIcons" FontSize="14" />
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                    <Label Text="{Binding Descripcion}" Style="{StaticResource CardDesc}" FontSize="14" MaxLines="2" />
+                                    <HorizontalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Etiquetas}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Etiqueta">
+                                                <Border Style="{StaticResource Tag}" BackgroundColor="{Binding ColorFondo}">
+                                                    <Label Text="{Binding Texto}" Style="{StaticResource TagText}" TextColor="{Binding ColorTexto}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </HorizontalStackLayout>
+                                    <Border Style="{StaticResource Pill}">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnVerPerfilTapped" />
+                                        </Border.GestureRecognizers>
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label Text="Ver perfil" FontFamily="NunitoBold" FontSize="14" VerticalOptions="Center" />
+                                            <Label Grid.Column="1" Text="&#xE5CC;" Style="{StaticResource Icono}" FontSize="22" />
+                                        </Grid>
+                                    </Border>
+                                </VerticalStackLayout>
+
+                                <!-- Ícono redondo superpuesto entre foto y texto -->
+                                <Image Grid.RowSpan="2" Source="{Binding IconoUrl}" WidthRequest="68" HeightRequest="68"
+                                       HorizontalOptions="Start" VerticalOptions="Start" Margin="12,148,0,0" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
+            <IndicatorView x:Name="Indicador" Margin="0,-12,0,0" />
+
+            <!-- ===== Categorías ===== -->
+            <Label Text="Categorías" Style="{StaticResource SectionTitle}" Margin="0,0,0,-8" />
+
+            <ScrollView Orientation="Horizontal" Margin="-20,0" Padding="20,4">
+                <HorizontalStackLayout Spacing="10" Padding="0,0,20,8">
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_cat_rescate.png" HeightRequest="48" /><Label Text="Rescate" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_cat_adopcion.png" HeightRequest="48" /><Label Text="Adopción" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_cat_alimento.png" HeightRequest="48" /><Label Text="Alimentación" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_cat_salud.png" HeightRequest="48" /><Label Text="Salud" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_cat_educacion.png" HeightRequest="48" /><Label Text="Educación" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <!-- ===== Banner ===== -->
+            <Border Style="{StaticResource Banner}" Padding="0" BackgroundColor="#F1EDF9">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Spacing="6" Padding="20,20,0,20" VerticalOptions="Center">
+                        <Label Text="¿Quieres ayudar?" FontFamily="NunitoExtraBold" FontSize="21" />
+                        <Label Text="Tu apoyo hace la diferencia en la vida de muchos animales." Style="{StaticResource CardDesc}" FontSize="14" />
+                        <Button Text="Hacer donación" HorizontalOptions="Start" Margin="0,8,0,0"
+                                ContentLayout="Right,8" Clicked="OnDonarClicked">
+                            <Button.ImageSource>
+                                <FontImageSource Glyph="&#xE87E;" FontFamily="MaterialIcons" Color="White" Size="20" />
+                            </Button.ImageSource>
+                        </Button>
+                    </VerticalStackLayout>
+                    <Image Grid.Column="1" Source="rv_asoc_banner.png" WidthRequest="150" Aspect="AspectFit"
+                           VerticalOptions="End" />
+                </Grid>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

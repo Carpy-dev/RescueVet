@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Pantalla principal del usuario común: accesos a veterinarias, asociaciones, Mi Mascota y novedades. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Demo.Models"
+             x:Class="Demo.Views.Inicio.HomePage"
+             Title="Inicio"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,24,20,28" Spacing="20">
+
+            <!-- ===== Cabecera ===== -->
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                <Image Source="rv_home_avatar.png" WidthRequest="76" HeightRequest="76" />
+
+                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                    <Label Style="{StaticResource PageTitle}" FontSize="28">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span x:Name="Saludo" Text="¡Hola! " FontFamily="NunitoExtraBold" />
+                                <Span Text="&#xE91D;" FontFamily="MaterialIcons" FontSize="24" TextColor="{StaticResource TextDark}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label Text="¿Qué necesitas hoy?" Style="{StaticResource PageSubtitle}" FontSize="18" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2" Spacing="2" VerticalOptions="Center">
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnConfiguracionTapped" />
+                    </VerticalStackLayout.GestureRecognizers>
+                    <Image Source="rv_home_config.png" WidthRequest="52" HeightRequest="48" />
+                    <Label Text="Configuración" FontSize="11" FontFamily="NunitoSemiBold" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- ===== Servicios principales ===== -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
+
+                <Border Style="{StaticResource Card}" Padding="16">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnAsociacionesTapped" />
+                    </Border.GestureRecognizers>
+                    <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="8">
+                        <Image Source="rv_home_ic_asoc.png" WidthRequest="78" HeightRequest="86" HorizontalOptions="Start" />
+                        <Label Grid.Row="1" Text="Asociaciones de animales" Style="{StaticResource CardTitle}" FontSize="17" />
+                        <Label Grid.Row="2" Text="Encuentra asociaciones cerca de ti que rescatan y ayudan animales"
+                               Style="{StaticResource CardDesc}" FontSize="14" />
+                        <Grid Grid.Row="3" ColumnDefinitions="*,Auto" Margin="0,6,0,0">
+                            <Border Style="{StaticResource Tag}" BackgroundColor="{StaticResource BlueBg}" Padding="10,5">
+                                <Label Text="Ver asociaciones" Style="{StaticResource TagText}" FontSize="12" TextColor="{StaticResource Blue}" />
+                            </Border>
+                            <Label Grid.Column="1" Text="&#xE5CC;" Style="{StaticResource Icono}" FontSize="24" />
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource Card}" Padding="16">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnVeterinariasTapped" />
+                    </Border.GestureRecognizers>
+                    <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="8">
+                        <Border Style="{StaticResource IconBox}" WidthRequest="84" HeightRequest="86"
+                                StrokeShape="RoundRectangle 16" BackgroundColor="{StaticResource GreenBg}" HorizontalOptions="Start">
+                            <Image Source="rv_home_ic_vet.png" WidthRequest="54" />
+                        </Border>
+                        <Label Grid.Row="1" Text="Veterinarias" Style="{StaticResource CardTitle}" FontSize="17" />
+                        <Label Grid.Row="2" Text="Encuentra veterinarias y cuida la salud de tu mascota"
+                               Style="{StaticResource CardDesc}" FontSize="14" />
+                        <Grid Grid.Row="3" ColumnDefinitions="*,Auto" Margin="0,6,0,0">
+                            <Border Style="{StaticResource Tag}" BackgroundColor="{StaticResource GreenBg}" Padding="10,5">
+                                <Label Text="Ver veterinarias" Style="{StaticResource TagText}" FontSize="12" TextColor="{StaticResource Green}" />
+                            </Border>
+                            <Label Grid.Column="1" Text="&#xE5CC;" Style="{StaticResource Icono}" FontSize="24" />
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- ===== Mi Mascota ===== -->
+            <Border Style="{StaticResource Banner}" Padding="0" BackgroundColor="#F5EFFD">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnMiMascotaTapped" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                    <Image Source="rv_home_mascota.png" WidthRequest="130" HeightRequest="140" Aspect="AspectFill" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center" Padding="0,14">
+                        <Label Style="{StaticResource PageTitle}" FontSize="21">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Mi Mascota " FontFamily="NunitoExtraBold" />
+                                    <Span Text="&#xE91D;" FontFamily="MaterialIcons" FontSize="20" TextColor="{StaticResource Primary}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Text="Accede al perfil, historial médico, recordatorios y cuidados de tu mascota"
+                               Style="{StaticResource CardDesc}" FontSize="14" />
+                    </VerticalStackLayout>
+                    <Border Grid.Column="2" WidthRequest="52" HeightRequest="52" StrokeThickness="0"
+                            StrokeShape="RoundRectangle 26" BackgroundColor="#8853FB" Margin="0,0,16,0">
+                        <Label Text="&#xE5CC;" Style="{StaticResource Icono}" FontSize="30" TextColor="White" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ===== Accesos rápidos ===== -->
+            <Label Text="Accesos rápidos" Style="{StaticResource SectionTitle}" Margin="0,4,0,-6" />
+
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Border Style="{StaticResource ColorTile}" BackgroundColor="#FCEBED">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnReportarTapped" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Image Source="rv_home_ic_reportar.png" HeightRequest="48" />
+                        <Label Text="Reportar caso" Style="{StaticResource TileText}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource ColorTile}" BackgroundColor="#FCF4E2">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnDonarTapped" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Image Source="rv_home_ic_donar.png" HeightRequest="48" />
+                        <Label Text="Hacer Donación" Style="{StaticResource TileText}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource ColorTile}" BackgroundColor="#FEECED">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnEmergenciaTapped" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Image Source="rv_home_ic_sos.png" HeightRequest="48" />
+                        <Label Text="Emergencia animal" Style="{StaticResource TileText}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- ===== Novedades ===== -->
+            <Label Text="Novedades" Style="{StaticResource SectionTitle}" Margin="0,4,0,-6" />
+
+            <VerticalStackLayout x:Name="ListaNovedades" Spacing="12">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:Novedad">
+                        <Border Style="{StaticResource Card}" Padding="0">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnNovedadTapped" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                                <Border StrokeThickness="0" StrokeShape="RoundRectangle 16" Margin="8">
+                                    <Image Source="{Binding FotoUrl}" WidthRequest="120" HeightRequest="92" Aspect="AspectFill" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                    <Label Text="{Binding Titulo}" Style="{StaticResource CardTitle}" />
+                                    <Label Text="{Binding Descripcion}" Style="{StaticResource CardDesc}" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="2" Text="&#xE5CC;" Style="{StaticResource Icono}" FontSize="26" Margin="0,0,12,0" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

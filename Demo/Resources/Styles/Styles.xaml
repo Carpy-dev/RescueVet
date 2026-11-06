@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Estilos compartidos de tarjetas, botones, textos y campos. Se usan con StaticResource y el nombre del estilo. -->
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- =====================================================
+         Estilos únicos de RescueVet.
+         1) Implícitos (se aplican solos)
+         2) Textos  3) Contenedores  4) Botones  5) Login
+         ===================================================== -->
+
+    <!-- ================= 1) Implícitos ================= -->
+
+    <Style TargetType="Page" ApplyToDerivedTypes="True">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Bg}" />
+    </Style>
+
+    <Style TargetType="Shell" ApplyToDerivedTypes="True">
+        <Setter Property="Shell.BackgroundColor" Value="{StaticResource Bg}" />
+        <Setter Property="Shell.ForegroundColor" Value="{StaticResource TextDark}" />
+        <Setter Property="Shell.TitleColor" Value="{StaticResource TextDark}" />
+        <Setter Property="Shell.NavBarHasShadow" Value="False" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Blue}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Blue}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource Muted}" />
+        <Setter Property="Shell.UnselectedColor" Value="{StaticResource Muted}" />
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="FontFamily" Value="NunitoRegular" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="{StaticResource TextDark}" />
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="FontFamily" Value="NunitoBold" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="TextColor" Value="{StaticResource White}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="CornerRadius" Value="14" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="Padding" Value="18,0" />
+        <Setter Property="MinimumHeightRequest" Value="44" />
+        <Setter Property="MinimumWidthRequest" Value="44" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.5" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.8" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Entry">
+        <Setter Property="FontFamily" Value="NunitoRegular" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="TextColor" Value="{StaticResource TextDark}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource Placeholder}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="MinimumHeightRequest" Value="44" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <Style TargetType="Editor">
+        <Setter Property="FontFamily" Value="NunitoRegular" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="TextColor" Value="{StaticResource TextDark}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource Placeholder}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+    <Style TargetType="Picker">
+        <Setter Property="FontFamily" Value="NunitoRegular" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="TextColor" Value="{StaticResource TextDark}" />
+        <Setter Property="TitleColor" Value="{StaticResource Placeholder}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="MinimumHeightRequest" Value="44" />
+    </Style>
+
+    <Style TargetType="ProgressBar">
+        <Setter Property="ProgressColor" Value="{StaticResource Primary}" />
+    </Style>
+
+    <Style TargetType="ScrollView">
+        <Setter Property="VerticalScrollBarVisibility" Value="Never" />
+        <Setter Property="HorizontalScrollBarVisibility" Value="Never" />
+    </Style>
+
+    <Style TargetType="IndicatorView">
+        <Setter Property="IndicatorColor" Value="#DCDDE6" />
+        <Setter Property="SelectedIndicatorColor" Value="{StaticResource Primary}" />
+        <Setter Property="IndicatorSize" Value="8" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+    </Style>
+
+    <!-- ================= 2) Textos ================= -->
+
+    <!-- Ícono de la fuente MaterialIcons dentro de un Label -->
+    <Style x:Key="Icono" TargetType="Label">
+        <Setter Property="FontFamily" Value="MaterialIcons" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="PageTitle" TargetType="Label">
+        <Setter Property="FontFamily" Value="NunitoExtraBold" />
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="LineHeight" Value="1.05" />
+    </Style>
+
+    <Style x:Key="PageSubtitle" TargetType="Label">
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="TextColor" Value="{StaticResource Muted}" />
+        <Setter Property="LineHeight" Value="1.2" />
+    </Style>
+
+    <Style x:Key="SectionTitle" TargetType="Label">
+        <Setter Property="FontFamily" Value="NunitoExtraBold" />
+        <Setter Property="FontSize" Value="19" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="CardTitle" TargetType="Label">
+        <Setter Property="FontFamily" Value="NunitoExtraBold" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <Style x:Key="CardDesc" TargetType="Label">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextColor" Value="{StaticResource Muted}" />
+        <Setter Property="LineHeight" Value="1.2" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+
+    <Style x:Key="SmallText" TargetType="Label">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextColor" Value="{StaticResource Muted}" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="FieldLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="NunitoBold" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Margin" Value="4,0,0,-6" />
+    </Style>
+
+    <Style x:Key="LinkLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="NunitoBold" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="TagText" TargetType="Label">
+        <Setter Property="FontFamily" Value="NunitoBold" />
+        <Setter Property="FontSize" Value="11" />
+    </Style>
+
+    <Style x:Key="TileText" TargetType="Label">
+        <Setter Property="FontFamily" Value="NunitoBold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+    <!-- ================= 3) Contenedores ================= -->
+
+    <Style x:Key="Card" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="Stroke" Value="{StaticResource Line}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 20" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Brush="#0A2040" Opacity="0.05" Radius="16" Offset="0,4" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="CardFlush" TargetType="Border" BasedOn="{StaticResource Card}">
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <!-- Mosaico chico con ícono + texto (categorías, servicios) -->
+    <Style x:Key="Tile" TargetType="Border" BasedOn="{StaticResource Card}">
+        <Setter Property="Padding" Value="6,12" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+        <Setter Property="WidthRequest" Value="104" />
+    </Style>
+
+    <!-- Mosaico de color (accesos rápidos) -->
+    <Style x:Key="ColorTile" TargetType="Border">
+        <Setter Property="Padding" Value="6,14" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 18" />
+    </Style>
+
+    <Style x:Key="IconBox" TargetType="Border">
+        <Setter Property="WidthRequest" Value="52" />
+        <Setter Property="HeightRequest" Value="52" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="Tag" TargetType="Border">
+        <Setter Property="Padding" Value="10,4" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <!-- Botón tipo píldora "Ver perfil  ›" dentro de las tarjetas -->
+    <Style x:Key="Pill" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource PrimarySoft}" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 14" />
+        <Setter Property="Padding" Value="14,10" />
+    </Style>
+
+    <Style x:Key="Banner" TargetType="Border">
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 22" />
+        <Setter Property="BackgroundColor" Value="{StaticResource PrimaryBg}" />
+    </Style>
+
+    <!-- Caja blanca que envuelve un Entry/Picker/Editor -->
+    <Style x:Key="CajaCampo" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="Stroke" Value="{StaticResource Line}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 16" />
+        <Setter Property="Padding" Value="14,4" />
+    </Style>
+
+    <Style x:Key="IconoCampo" TargetType="Label" BasedOn="{StaticResource Icono}">
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="TextColor" Value="{StaticResource Muted}" />
+        <Setter Property="Margin" Value="0,0,10,0" />
+    </Style>
+
+    <!-- Círculo blanco con corazón (favoritos) -->
+    <Style x:Key="HeartCircle" TargetType="Border">
+        <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 20" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="Start" />
+    </Style>
+
+    <!-- Chip de filtro (Todos / Rescate / Médico...) -->
+    <Style x:Key="Chip" TargetType="Border" BasedOn="{StaticResource Card}">
+        <Setter Property="Padding" Value="14,8" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 20" />
+    </Style>
+
+    <!-- ================= 4) Botones ================= -->
+
+    <Style x:Key="PrimaryButton" TargetType="Button">
+        <Setter Property="HeightRequest" Value="50" />
+    </Style>
+
+    <Style x:Key="LinkButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+    </Style>
+
+    <!-- ================= 5) Login / registro ================= -->
+
+    <Style x:Key="LoginTitulo" TargetType="Label">
+        <Setter Property="FontFamily" Value="NunitoExtraBold" />
+        <Setter Property="FontSize" Value="34" />
+        <Setter Property="TextColor" Value="{StaticResource LoginTexto}" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="LoginSubtitulo" TargetType="Label">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="#5B6575" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="LoginCampo" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="Stroke" Value="#DCE6EE" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 26" />
+        <Setter Property="Padding" Value="20,4" />
+        <Setter Property="MinimumHeightRequest" Value="54" />
+    </Style>
+
+    <Style x:Key="LoginBoton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource LoginAzul}" />
+        <Setter Property="CornerRadius" Value="26" />
+        <Setter Property="HeightRequest" Value="54" />
+        <Setter Property="FontSize" Value="18" />
+    </Style>
+
+    <Style x:Key="LoginBotonBlanco" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="BorderColor" Value="#DCE6EE" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="CornerRadius" Value="24" />
+        <Setter Property="HeightRequest" Value="50" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <Style x:Key="LoginTarjeta" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="Stroke" Value="#DCE6EE" />
+        <Setter Property="StrokeThickness" Value="1.5" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 24" />
+        <Setter Property="Padding" Value="20,18" />
+    </Style>
+
+</ResourceDictionary>

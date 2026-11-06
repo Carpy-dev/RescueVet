@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Paleta de la app: define los colores con nombre que usan las pantallas. -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- =====================================================
+         Paleta única de RescueVet (tomada de los diseños de /pantallas).
+         Violeta = color principal de la app.
+         Login y registro usan el celeste + azul del logo.
+         ===================================================== -->
+
+    <!-- Fondos y superficies -->
+    <Color x:Key="Bg">#FAFAFD</Color>
+    <Color x:Key="Surface">#FFFFFF</Color>
+    <Color x:Key="Line">#EEF0F5</Color>
+
+    <!-- Textos -->
+    <Color x:Key="TextDark">#0A2040</Color>
+    <Color x:Key="Muted">#66718D</Color>
+    <Color x:Key="Placeholder">#9AA3B8</Color>
+
+    <!-- Marca (violeta) -->
+    <Color x:Key="Primary">#744DEF</Color>
+    <Color x:Key="PrimaryBg">#F3EFFD</Color>
+    <Color x:Key="PrimarySoft">#F6F4FE</Color>
+
+    <!-- Acentos -->
+    <Color x:Key="Blue">#1A7CF0</Color>
+    <Color x:Key="BlueBg">#EFF7FE</Color>
+
+    <Color x:Key="Green">#1FA463</Color>
+    <Color x:Key="GreenBg">#E8FAEF</Color>
+
+    <Color x:Key="Amber">#E39A0E</Color>
+    <Color x:Key="AmberBg">#FFF5E3</Color>
+
+    <Color x:Key="Red">#F2505F</Color>
+    <Color x:Key="RedBg">#FDEEF0</Color>
+
+    <Color x:Key="Star">#F5B301</Color>
+
+    <!-- Login / registro -->
+    <Color x:Key="LoginBg">#C9EEFF</Color>
+    <Color x:Key="LoginCirculo">#DDF5FF</Color>
+    <Color x:Key="LoginAzul">#087FF5</Color>
+    <Color x:Key="LoginTexto">#1E1E1E</Color>
+
+    <Color x:Key="White">White</Color>
+    <Color x:Key="Black">Black</Color>
+
+</ResourceDictionary>

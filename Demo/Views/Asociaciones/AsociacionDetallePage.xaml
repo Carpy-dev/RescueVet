@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla: perfil de una asociación, con sus números, datos de contacto y necesidades. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             xmlns:models="clr-namespace:Demo.Models"
+             x:Class="Demo.Views.Asociaciones.AsociacionDetallePage"
+             x:DataType="models:Asociacion"
+             Title="Asociación"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <ScrollView>
+            <Grid RowDefinitions="Auto,Auto">
+
+                <!-- ===== Foto principal ===== -->
+                <Grid HeightRequest="290">
+                    <Image Source="{Binding FotoUrl}" Aspect="AspectFill" />
+                    <controls:BotonAtras Margin="20,16,0,0" />
+                    <Border Style="{StaticResource HeartCircle}" WidthRequest="46" HeightRequest="46"
+                            StrokeShape="RoundRectangle 23" Margin="0,16,20,0">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnFavoritoTapped" />
+                        </Border.GestureRecognizers>
+                        <Label Text="&#xE87E;" Style="{StaticResource Icono}" FontSize="26" TextColor="{StaticResource TextDark}">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding EsFavorito}" Value="True">
+                                    <Setter Property="Text" Value="&#xE87D;" />
+                                    <Setter Property="TextColor" Value="{StaticResource Red}" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </Border>
+                </Grid>
+
+                <!-- ===== Hoja con la información ===== -->
+                <Border Grid.Row="1" BackgroundColor="{StaticResource Bg}" StrokeThickness="0"
+                        StrokeShape="RoundRectangle 28,28,0,0" Margin="0,-30,0,0" Padding="20,0,20,24">
+                    <VerticalStackLayout Spacing="18">
+
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                            <BoxView WidthRequest="80" Color="Transparent" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="2" Padding="0,14,0,0">
+                                <Label Text="{Binding Nombre}" Style="{StaticResource PageTitle}" FontSize="24" />
+                                <Label Style="{StaticResource SmallText}" FontSize="13">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="&#xE55F;" FontFamily="MaterialIcons" FontSize="14" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding Distancia}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <HorizontalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Etiquetas}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:Etiqueta">
+                                    <Border Style="{StaticResource Tag}" BackgroundColor="{Binding ColorFondo}">
+                                        <Label Text="{Binding Texto}" Style="{StaticResource TagText}" TextColor="{Binding ColorTexto}" />
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+
+                        <!-- Números -->
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Border Style="{StaticResource ColorTile}" BackgroundColor="{StaticResource PrimaryBg}">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Rescatados}" Style="{StaticResource PageTitle}" FontSize="22" TextColor="{StaticResource Primary}" HorizontalOptions="Center" />
+                                    <Label Text="Rescatados" Style="{StaticResource TileText}" />
+                                </VerticalStackLayout>
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource ColorTile}" BackgroundColor="{StaticResource GreenBg}">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Adoptados}" Style="{StaticResource PageTitle}" FontSize="22" TextColor="{StaticResource Green}" HorizontalOptions="Center" />
+                                    <Label Text="Adoptados" Style="{StaticResource TileText}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+
+                        <!-- Sobre nosotros -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Sobre nosotros" Style="{StaticResource SectionTitle}" />
+                            <Label Text="{Binding SobreNosotros}" Style="{StaticResource CardDesc}" FontSize="15" />
+                        </VerticalStackLayout>
+
+                        <!-- Contacto -->
+                        <Border Style="{StaticResource Card}">
+                            <VerticalStackLayout Spacing="14">
+                                <controls:FilaInfo Glifo="&#xE55F;" Titulo="Dirección" Valor="{Binding Direccion}" Color="{StaticResource Primary}" />
+                                <controls:FilaInfo Glifo="&#xE8B5;" Titulo="Horario de atención" Valor="{Binding Horario}" Color="{StaticResource Green}" />
+                                <controls:FilaInfo Glifo="&#xE0CD;" Titulo="Teléfono" Valor="{Binding Telefono}" Color="{StaticResource Blue}" />
+                                <controls:FilaInfo Glifo="&#xE0BE;" Titulo="Correo" Valor="{Binding Email}" Color="{StaticResource Amber}" />
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!-- Qué necesitan -->
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="¿Qué necesitan hoy?" Style="{StaticResource SectionTitle}" />
+                            <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Necesidades}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="x:String">
+                                        <Border Style="{StaticResource Chip}" Margin="0,0,8,8">
+                                            <HorizontalStackLayout Spacing="6">
+                                                <Label Text="&#xE86C;" Style="{StaticResource Icono}" FontSize="18" TextColor="{StaticResource Green}" />
+                                                <Label Text="{Binding .}" FontFamily="NunitoBold" FontSize="13" VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
+                                        </Border>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </FlexLayout>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Ícono redondo superpuesto entre la foto y la hoja (va al final para quedar encima) -->
+                <Image Grid.Row="1" Source="{Binding IconoUrl}" WidthRequest="80" HeightRequest="80"
+                       HorizontalOptions="Start" VerticalOptions="Start" Margin="20,-58,0,0" />
+            </Grid>
+        </ScrollView>
+
+        <!-- ===== Acciones fijas abajo ===== -->
+        <Border Grid.Row="1" BackgroundColor="{StaticResource Surface}" StrokeThickness="0"
+                StrokeShape="RoundRectangle 24,24,0,0" Padding="20,14">
+            <Border.Shadow>
+                <Shadow Brush="#0A2040" Opacity="0.08" Radius="16" Offset="0,-4" />
+            </Border.Shadow>
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <Button Text="Favorito" Style="{StaticResource PrimaryButton}"
+                        BackgroundColor="{StaticResource PrimarySoft}" TextColor="{StaticResource Primary}"
+                        Clicked="OnFavoritoTapped">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding EsFavorito}" Value="True">
+                            <Setter Property="Text" Value="Quitar" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <ImageButton Grid.Column="1" Source="rv_whatsapp.png" BackgroundColor="#25D366" WidthRequest="54" HeightRequest="54" CornerRadius="27" Padding="12"
+                             VerticalOptions="Center" Clicked="OnContactarClicked" SemanticProperties.Description="Contactar por WhatsApp" />
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

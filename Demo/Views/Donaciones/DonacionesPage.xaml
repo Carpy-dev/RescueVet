@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla: vista previa de donaciones. Muestra campañas de la base, pero todavía no procesa pagos. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             xmlns:models="clr-namespace:Demo.Models"
+             x:Class="Demo.Views.Donaciones.DonacionesPage"
+             Title="Donación"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,24,20,28" Spacing="18">
+
+            <controls:PageHeader Titulo="Donaciones" MostrarAtras="False"
+                                 Subtitulo="Muy pronto vas a poder ayudar a las campañas desde acá."
+                                 Imagen="rv_ilus_asoc.png" AnchoImagen="130" />
+
+            <!-- ===== Aviso de futura funcionalidad ===== -->
+            <Border Style="{StaticResource Banner}" BackgroundColor="{StaticResource AmberBg}" Padding="18">
+                <VerticalStackLayout Spacing="12">
+                    <HorizontalStackLayout Spacing="10">
+                        <Label Text="&#xEA3C;" Style="{StaticResource Icono}" FontSize="26" TextColor="{StaticResource Amber}" />
+                        <Label Text="Próximamente" FontFamily="NunitoExtraBold" FontSize="19" TextColor="{StaticResource Amber}" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <Label Style="{StaticResource CardDesc}" FontSize="14" TextColor="{StaticResource TextDark}"
+                           Text="Estamos trabajando para que puedas donar de forma segura sin salir de RescueVet. Mientras tanto, podés contactar a cada asociación desde su perfil." />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ===== Vista previa: donación rápida ===== -->
+            <Border Style="{StaticResource Card}" Opacity="0.75">
+                <VerticalStackLayout Spacing="12">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Donación rápida" FontFamily="NunitoExtraBold" FontSize="18" />
+                        <Border Grid.Column="1" Style="{StaticResource Tag}" BackgroundColor="{StaticResource AmberBg}">
+                            <Label Text="Vista previa" Style="{StaticResource TagText}" TextColor="{StaticResource Amber}" />
+                        </Border>
+                    </Grid>
+                    <Label Text="Elegí un monto y lo repartimos entre las campañas más urgentes." Style="{StaticResource CardDesc}" FontSize="14" />
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                        <Border Style="{StaticResource Chip}"><Label Text="$1.000" FontFamily="NunitoBold" HorizontalOptions="Center" /></Border>
+                        <Border Grid.Column="1" Style="{StaticResource Chip}" BackgroundColor="{StaticResource PrimaryBg}" Stroke="{StaticResource Primary}">
+                            <Label Text="$2.500" FontFamily="NunitoBold" TextColor="{StaticResource Primary}" HorizontalOptions="Center" />
+                        </Border>
+                        <Border Grid.Column="2" Style="{StaticResource Chip}"><Label Text="$5.000" FontFamily="NunitoBold" HorizontalOptions="Center" /></Border>
+                    </Grid>
+                    <Button Text="Donar (próximamente)" Style="{StaticResource PrimaryButton}" IsEnabled="False" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ===== Campañas ===== -->
+            <Label Text="Campañas que podrás apoyar" Style="{StaticResource SectionTitle}" Margin="0,4,0,-6" />
+
+            <VerticalStackLayout x:Name="ListaCampanas" Spacing="18">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:Campana">
+                        <Border Style="{StaticResource CardFlush}">
+                            <VerticalStackLayout>
+                                <Image Source="{Binding FotoUrl}" HeightRequest="150" Aspect="AspectFill" />
+                                <VerticalStackLayout Padding="16" Spacing="10">
+                                    <Label Text="{Binding Titulo}" Style="{StaticResource CardTitle}" FontSize="17" />
+                                    <Label Text="{Binding Detalle}" Style="{StaticResource CardDesc}" />
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Text="{Binding Recaudado}" FontFamily="NunitoBold" FontSize="13" />
+                                        <Label Grid.Column="1" Text="{Binding PorcentajeTexto}" FontFamily="NunitoBold" FontSize="13" TextColor="{StaticResource Primary}" />
+                                    </Grid>
+                                    <ProgressBar Progress="{Binding Progreso}" />
+                                    <Button Text="Ver asociación" BackgroundColor="{StaticResource PrimarySoft}" TextColor="{StaticResource Primary}"
+                                            Clicked="OnVerAsociacionClicked" CommandParameter="{Binding Asociacion}" />
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

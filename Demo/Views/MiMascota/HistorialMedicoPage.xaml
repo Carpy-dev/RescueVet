@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla de solo lectura: resumen médico y registros de la mascota. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             xmlns:models="clr-namespace:Demo.Models"
+             x:Class="Demo.Views.MiMascota.HistorialMedicoPage"
+             x:DataType="models:Mascota"
+             Title="Historial médico"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,16,20,28" Spacing="18">
+
+            <controls:PageHeader Titulo="Historial médico" Subtitulo="Consultas, vacunas y tratamientos de tu mascota."
+                                 Imagen="rv_masc_ic_historial.png" AnchoImagen="70" />
+
+            <!-- Resumen -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Border Style="{StaticResource ColorTile}" BackgroundColor="{StaticResource GreenBg}">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding EstadoVacunas}" FontFamily="NunitoExtraBold" FontSize="17" TextColor="{StaticResource Green}" HorizontalOptions="Center" />
+                        <Label Text="Vacunas" Style="{StaticResource TileText}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource ColorTile}" BackgroundColor="{StaticResource PrimaryBg}">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding PesoActual}" FontFamily="NunitoExtraBold" FontSize="17" TextColor="{StaticResource Primary}" HorizontalOptions="Center" />
+                        <Label Text="Último peso" Style="{StaticResource TileText}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource ColorTile}" BackgroundColor="{StaticResource AmberBg}">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding Alergias}" FontFamily="NunitoExtraBold" FontSize="17" TextColor="{StaticResource Amber}" HorizontalOptions="Center" />
+                        <Label Text="Alergias" Style="{StaticResource TileText}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <Label Text="Registros" Style="{StaticResource SectionTitle}" Margin="0,4,0,-6" />
+
+            <!-- Línea de tiempo -->
+            <VerticalStackLayout x:Name="Registros">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="models:RegistroMedico">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                            <!-- Punto y línea -->
+                            <Grid RowDefinitions="Auto,*" WidthRequest="44">
+                                <Border WidthRequest="44" HeightRequest="44" StrokeThickness="0" StrokeShape="RoundRectangle 22"
+                                        BackgroundColor="{StaticResource Surface}">
+                                    <Label Text="{Binding Glifo}" Style="{StaticResource Icono}" FontSize="22" TextColor="{Binding Color}" />
+                                </Border>
+                                <BoxView Grid.Row="1" WidthRequest="2" Color="{StaticResource Line}" HorizontalOptions="Center" />
+                            </Grid>
+                            <Border Grid.Column="1" Style="{StaticResource Card}" Padding="14" Margin="0,0,0,14">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding FechaTexto}" Style="{StaticResource SmallText}" />
+                                    <Label Text="{Binding Titulo}" Style="{StaticResource CardTitle}" />
+                                    <Label Text="{Binding Detalle}" Style="{StaticResource CardDesc}" FontSize="14" />
+                                    <Label Style="{StaticResource SmallText}" Margin="0,4,0,0">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="&#xE548;" FontFamily="MaterialIcons" FontSize="14" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding Lugar}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

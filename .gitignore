@@ -1,0 +1,39 @@
+# Compilación
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.apk
+*.aab
+*.ipa
+*.msix
+
+# Visual Studio y otros editores
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.rsuser
+
+# Configuración local y secretos
+.env
+.env.*
+appsettings.*.local.json
+*.pfx
+*.p12
+*.keystore
+*.jks
+*.mobileprovision
+
+# Bases de datos y registros locales
+*.mdf
+*.ldf
+*.bak
+*.log
+
+# Archivos temporales de Office y del sistema
+~$*
+Thumbs.db
+Desktop.ini
+.DS_Store

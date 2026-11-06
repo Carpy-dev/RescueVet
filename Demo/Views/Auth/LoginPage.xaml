@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla: inicio de sesión con correo y contraseña. Facebook y Google son solo de muestra. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Demo.Views.Auth.LoginPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource LoginBg}">
+
+    <Grid>
+        <!-- Círculos decorativos de fondo -->
+        <Ellipse Fill="{StaticResource LoginCirculo}" WidthRequest="340" HeightRequest="340"
+                 HorizontalOptions="End" VerticalOptions="Start" Margin="0,300,-170,0" />
+        <Ellipse Fill="{StaticResource LoginCirculo}" WidthRequest="260" HeightRequest="260"
+                 HorizontalOptions="Start" VerticalOptions="End" Margin="-150,0,0,-60" />
+
+        <ScrollView>
+            <VerticalStackLayout Padding="32,40,32,30" Spacing="18" MaximumWidthRequest="460">
+
+                <Image Source="rv_logo.png" WidthRequest="250" HorizontalOptions="Center" />
+
+                <Label Text="Iniciar Sesión" Style="{StaticResource LoginTitulo}" Margin="0,24,0,0" />
+                <Label Text="Ingresá a tu cuenta de RescueVet" Style="{StaticResource LoginSubtitulo}" Margin="0,0,0,8" />
+
+                <Border Style="{StaticResource LoginCampo}">
+                    <Entry x:Name="EmailEntry" Placeholder="Correo electrónico" Keyboard="Email"
+                           FontSize="17" ReturnType="Next" />
+                </Border>
+
+                <Border Style="{StaticResource LoginCampo}">
+                    <Entry x:Name="PasswordEntry" Placeholder="Contraseña" IsPassword="True"
+                           FontSize="17" ReturnType="Go" Completed="OnLoginClicked" />
+                </Border>
+
+                <Button Text="Iniciar Sesión" Style="{StaticResource LoginBoton}"
+                        Clicked="OnLoginClicked" Margin="0,6,0,0" />
+
+                <Label Text="O continuar con" Style="{StaticResource LoginSubtitulo}" FontSize="15" Margin="0,6,0,0" />
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                    <Button Text="Facebook" Style="{StaticResource LoginBotonBlanco}"
+                            TextColor="#1877F2" Clicked="OnRedSocialClicked" />
+                    <Button Grid.Column="1" Text="Google" Style="{StaticResource LoginBotonBlanco}"
+                            TextColor="{StaticResource LoginTexto}" Clicked="OnRedSocialClicked" />
+                </Grid>
+
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="6" Margin="0,10,0,0">
+                    <Label Text="¿No tenés una cuenta?" Style="{StaticResource LoginSubtitulo}" />
+                    <Label Text="Registrate" FontFamily="NunitoExtraBold" FontSize="16"
+                           TextColor="{StaticResource LoginAzul}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCrearCuentaTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

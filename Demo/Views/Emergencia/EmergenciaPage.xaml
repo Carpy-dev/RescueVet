@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla: pestaña Ayuda, con el tipo de emergencia, consejos y la línea telefónica. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             x:Class="Demo.Views.Emergencia.EmergenciaPage"
+             Title="Ayuda"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,24,20,28" Spacing="18">
+
+            <controls:PageHeader Titulo="Emergencia animal" Insignia="sos" MostrarAtras="False"
+                                 Subtitulo="Estamos aquí para ayudarte cuando más lo necesites."
+                                 Imagen="rv_ilus_sirena.png" AnchoImagen="130" />
+
+            <!-- ===== Tipo de emergencia ===== -->
+            <VerticalStackLayout Spacing="4" Margin="0,8,0,0">
+                <Label Text="¿Qué tipo de emergencia es?" Style="{StaticResource SectionTitle}" />
+                <Label Text="Selecciona la opción que mejor se adapte a la situación." Style="{StaticResource CardDesc}" FontSize="14" />
+            </VerticalStackLayout>
+
+            <Border Style="{StaticResource Card}" Padding="16,18">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTipoTapped" CommandParameter="mascota" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                    <Image Source="rv_emer_mascota.png" WidthRequest="110" HeightRequest="110" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                        <Label Text="Mi mascota" FontFamily="NunitoExtraBold" FontSize="20" TextColor="{StaticResource Red}" />
+                        <Label Text="La emergencia es de tu mascota y necesitas ayuda inmediata." Style="{StaticResource CardDesc}" FontSize="14" />
+                    </VerticalStackLayout>
+                    <Border Grid.Column="2" WidthRequest="48" HeightRequest="48" StrokeThickness="0"
+                            StrokeShape="RoundRectangle 24" BackgroundColor="{StaticResource Red}">
+                        <Label Text="&#xE5CC;" Style="{StaticResource Icono}" FontSize="28" TextColor="White" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Card}" Padding="16,18">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTipoTapped" CommandParameter="animal" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                    <Image Source="rv_emer_animal.png" WidthRequest="110" HeightRequest="110" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
+                        <Label Text="Animal en ayuda" FontFamily="NunitoExtraBold" FontSize="20" TextColor="{StaticResource Primary}" />
+                        <Label Text="La emergencia es de un animal que no es tuyo y necesita ayuda." Style="{StaticResource CardDesc}" FontSize="14" />
+                    </VerticalStackLayout>
+                    <Border Grid.Column="2" WidthRequest="48" HeightRequest="48" StrokeThickness="0"
+                            StrokeShape="RoundRectangle 24" BackgroundColor="#8853FB">
+                        <Label Text="&#xE5CC;" Style="{StaticResource Icono}" FontSize="28" TextColor="White" />
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- ===== Qué hacer ===== -->
+            <Label Text="¿Qué hacer en una emergencia?" Style="{StaticResource SectionTitle}" Margin="0,8,0,-6" />
+
+            <Border Style="{StaticResource Card}" Padding="16,6">
+                <VerticalStackLayout>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14" Padding="0,12">
+                        <Image Source="rv_emer_calma.png" WidthRequest="46" HeightRequest="46" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                            <Label Text="Mantén la calma" FontFamily="NunitoBold" FontSize="15" />
+                            <Label Text="Tu tranquilidad ayuda a tu mascota y a brindarle mejor ayuda." Style="{StaticResource CardDesc}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="{StaticResource Line}" Margin="60,0,0,0" />
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14" Padding="0,12">
+                        <Image Source="rv_emer_ubica.png" WidthRequest="46" HeightRequest="46" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                            <Label Text="Ubica el lugar" FontFamily="NunitoBold" FontSize="15" />
+                            <Label Text="Comparte tu ubicación para que podamos ayudarte mejor." Style="{StaticResource CardDesc}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="{StaticResource Line}" Margin="60,0,0,0" />
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14" Padding="0,12">
+                        <Image Source="rv_emer_info.png" WidthRequest="46" HeightRequest="46" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                            <Label Text="Brinda información clara" FontFamily="NunitoBold" FontSize="15" />
+                            <Label Text="Dinos qué pasó y cómo está tu mascota." Style="{StaticResource CardDesc}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="{StaticResource Line}" Margin="60,0,0,0" />
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14" Padding="0,12">
+                        <Image Source="rv_emer_instr.png" WidthRequest="46" HeightRequest="46" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                            <Label Text="Sigue las instrucciones" FontFamily="NunitoBold" FontSize="15" />
+                            <Label Text="Te guiaremos paso a paso hasta que recibas ayuda." Style="{StaticResource CardDesc}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ===== Línea 24/7 ===== -->
+            <Border Style="{StaticResource Banner}" BackgroundColor="{StaticResource RedBg}" Padding="16">
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+                    <Image Source="rv_emer_linea.png" WidthRequest="56" HeightRequest="58" VerticalOptions="Start" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="3">
+                        <Label Text="Línea de emergencia 24/7" FontFamily="NunitoExtraBold" FontSize="16" />
+                        <Label Text="Si la situación es crítica y necesitas ayuda inmediata, llama a nuestra línea."
+                               Style="{StaticResource CardDesc}" />
+                    </VerticalStackLayout>
+                    <Button Grid.Row="1" Grid.ColumnSpan="2" Text="Llamar ahora" BackgroundColor="{StaticResource Red}"
+                            HeightRequest="48" Clicked="OnLlamarClicked">
+                        <Button.ImageSource>
+                            <FontImageSource Glyph="&#xE0B0;" FontFamily="MaterialIcons" Color="White" Size="20" />
+                        </Button.ImageSource>
+                    </Button>
+                </Grid>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

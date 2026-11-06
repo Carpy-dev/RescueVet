@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla del panel de asociación: lista de casos publicados que necesitan ayuda. Los filtros aún no funcionan. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             xmlns:models="clr-namespace:Demo.Models"
+             x:Class="Demo.Views.Casos.CasosPage"
+             Title="Casos"
+             Shell.NavBarIsVisible="False">
+
+    <Grid>
+
+        <ScrollView>
+            <VerticalStackLayout Padding="20,16,20,20" Spacing="18">
+
+                <controls:PageHeader Titulo="Casos que necesitan ayuda" MostrarAtras="False"
+                                     Subtitulo="Personas y animales que necesitan apoyo. Tú puedes hacer la diferencia. 💜"
+                                     Imagen="rv_ilus_casos.png" AnchoImagen="130" />
+
+                <!-- Categorías -->
+                <ScrollView Orientation="Horizontal" Margin="-20,0" Padding="20,2">
+                    <HorizontalStackLayout Spacing="10" Padding="0,0,20,6">
+                        <Border Style="{StaticResource Chip}" BackgroundColor="{StaticResource Primary}" Stroke="{StaticResource Primary}" Padding="22,8">
+                            <Label Text="Todos" FontFamily="NunitoBold" FontSize="14" TextColor="White" VerticalOptions="Center" />
+                        </Border>
+                        <Border Style="{StaticResource Chip}">
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="&#xE91D;" Style="{StaticResource Icono}" FontSize="20" TextColor="#F2505F" />
+                                <Label Text="Rescate" FontFamily="NunitoBold" FontSize="14" TextColor="{StaticResource TextDark}" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                        <Border Style="{StaticResource Chip}">
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="&#xE548;" Style="{StaticResource Icono}" FontSize="20" TextColor="#1A7CF0" />
+                                <Label Text="Médico" FontFamily="NunitoBold" FontSize="14" TextColor="{StaticResource TextDark}" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                        <Border Style="{StaticResource Chip}">
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="&#xE56C;" Style="{StaticResource Icono}" FontSize="20" TextColor="#E39A0E" />
+                                <Label Text="Alimentación" FontFamily="NunitoBold" FontSize="14" TextColor="{StaticResource TextDark}" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                        <Border Style="{StaticResource Chip}">
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="&#xE5D3;" Style="{StaticResource Icono}" FontSize="20" TextColor="#744DEF" />
+                                <Label Text="Otros" FontFamily="NunitoBold" FontSize="14" TextColor="{StaticResource TextDark}" VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <!-- Lista de casos -->
+                <VerticalStackLayout x:Name="ListaCasos" Spacing="16">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:Caso">
+                            <Border Style="{StaticResource Card}" Padding="12">
+                                <Grid ColumnDefinitions="120,*" ColumnSpacing="14">
+                                    <Border StrokeThickness="0" StrokeShape="RoundRectangle 14" VerticalOptions="Start">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnCasoTapped" />
+                                        </Border.GestureRecognizers>
+                                        <Image Source="{Binding FotoUrl}" Aspect="AspectFill" HeightRequest="130" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="6">
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label Text="{Binding Nombre}" Style="{StaticResource CardTitle}" FontSize="16" />
+                                            <Label Grid.Column="1" Text="&#xE87E;" Style="{StaticResource Icono}" FontSize="26"
+                                                   VerticalOptions="Start" TextColor="{StaticResource TextDark}">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding EsFavorito}" Value="True">
+                                                        <Setter Property="Text" Value="&#xE87D;" />
+                                                        <Setter Property="TextColor" Value="{StaticResource Red}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </Grid>
+                                        <Label FontSize="13">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="&#xE55F;" FontFamily="MaterialIcons" FontSize="15" />
+                                                    <Span Text=" " />
+                                                    <Span Text="{Binding Ubicacion}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Text="{Binding Descripcion}" Style="{StaticResource CardDesc}" MaxLines="3">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnCasoTapped" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <Grid ColumnDefinitions="*,Auto" Margin="0,4,0,0">
+                                            <Label Style="{StaticResource SmallText}">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="&#xE192;" FontFamily="MaterialIcons" FontSize="14" />
+                                                        <Span Text=" " />
+                                                        <Span Text="{Binding Hace}" />
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <Button Grid.Column="1" Text="Ver caso" HeightRequest="40" MinimumHeightRequest="40"
+                                                    Padding="14,0" FontSize="14" Clicked="OnVerCasoClicked">
+                                                <Button.ImageSource>
+                                                    <FontImageSource Glyph="&#xE0CB;" FontFamily="MaterialIcons" Color="White" Size="18" />
+                                                </Button.ImageSource>
+                                            </Button>
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

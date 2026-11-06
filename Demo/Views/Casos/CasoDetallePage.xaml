@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla: detalle de un caso, con historia y datos de quien lo publicó, y botón de WhatsApp. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             xmlns:models="clr-namespace:Demo.Models"
+             x:Class="Demo.Views.Casos.CasoDetallePage"
+             x:DataType="models:Caso"
+             Title="Caso"
+             Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <ScrollView>
+            <VerticalStackLayout>
+
+                <!-- ===== Foto principal ===== -->
+                <Grid HeightRequest="320">
+                    <Image Source="{Binding FotoUrl}" Aspect="AspectFill" />
+                    <controls:BotonAtras Margin="20,16,0,0" />
+                    <HorizontalStackLayout HorizontalOptions="End" VerticalOptions="Start" Margin="0,16,20,0" Spacing="10">
+                        <Border Style="{StaticResource HeartCircle}" WidthRequest="46" HeightRequest="46" StrokeShape="RoundRectangle 23">
+                            <Label Text="&#xE87E;" Style="{StaticResource Icono}" FontSize="26" TextColor="{StaticResource TextDark}">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding EsFavorito}" Value="True">
+                                        <Setter Property="Text" Value="&#xE87D;" />
+                                        <Setter Property="TextColor" Value="{StaticResource Red}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </Border>
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <!-- ===== Hoja con la información ===== -->
+                <Border BackgroundColor="{StaticResource Bg}" StrokeThickness="0"
+                        StrokeShape="RoundRectangle 28,28,0,0" Margin="0,-30,0,0" Padding="20,22,20,24">
+                    <VerticalStackLayout Spacing="18">
+
+                        <VerticalStackLayout Spacing="8">
+                            <HorizontalStackLayout Spacing="8">
+                                <Border Style="{StaticResource Tag}" BackgroundColor="{StaticResource RedBg}">
+                                    <Label Text="{Binding Categoria}" Style="{StaticResource TagText}" TextColor="{StaticResource Red}" />
+                                </Border>
+                                <Label Style="{StaticResource SmallText}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="&#xE192;" FontFamily="MaterialIcons" FontSize="14" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding Hace}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </HorizontalStackLayout>
+                            <Label Text="{Binding Nombre}" Style="{StaticResource PageTitle}" FontSize="25" />
+                            <Label FontSize="14">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="&#xE55F;" FontFamily="MaterialIcons" FontSize="16" TextColor="{StaticResource Primary}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding Ubicacion}" FontFamily="NunitoSemiBold" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </VerticalStackLayout>
+
+                        <!-- Historia -->
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Su historia" Style="{StaticResource SectionTitle}" />
+                            <Label Text="{Binding Historia}" Style="{StaticResource CardDesc}" FontSize="15" />
+                        </VerticalStackLayout>
+
+                        <!-- Qué necesita -->
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="¿Qué necesita?" Style="{StaticResource SectionTitle}" />
+                            <Border Style="{StaticResource Card}" Padding="16,6">
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Necesita}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="x:String">
+                                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" Padding="0,10">
+                                                <Label Text="&#xE86C;" Style="{StaticResource Icono}" FontSize="20" TextColor="{StaticResource Green}" />
+                                                <Label Grid.Column="1" Text="{Binding .}" FontFamily="NunitoBold" FontSize="15" VerticalOptions="Center" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+
+                        <!-- Publicado por -->
+                        <Border Style="{StaticResource Banner}" Padding="14">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                <Border WidthRequest="48" HeightRequest="48" StrokeThickness="0" StrokeShape="RoundRectangle 24"
+                                        BackgroundColor="{StaticResource Primary}">
+                                    <Label Text="&#xE7FD;" Style="{StaticResource Icono}" FontSize="26" TextColor="White" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="Publicado por" Style="{StaticResource SmallText}" />
+                                    <Label Text="{Binding PublicadoPor}" Style="{StaticResource CardTitle}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+
+                        <Label Text="RescueVet no verifica cada publicación. Antes de transferir dinero, confirmá el caso con quien lo publicó."
+                               Style="{StaticResource SmallText}" HorizontalTextAlignment="Center" />
+
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- ===== Acciones fijas abajo ===== -->
+        <Border Grid.Row="1" BackgroundColor="{StaticResource Surface}" StrokeThickness="0"
+                StrokeShape="RoundRectangle 24,24,0,0" Padding="20,14">
+            <Border.Shadow>
+                <Shadow Brush="#0A2040" Opacity="0.08" Radius="16" Offset="0,-4" />
+            </Border.Shadow>
+            <ImageButton Source="rv_whatsapp.png" BackgroundColor="#25D366" WidthRequest="54" HeightRequest="54" CornerRadius="27" Padding="12"
+                         HorizontalOptions="Center" Clicked="OnContactarClicked" SemanticProperties.Description="Contactar por WhatsApp" />
+        </Border>
+    </Grid>
+</ContentPage>

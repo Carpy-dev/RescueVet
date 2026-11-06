@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla: registro en tres pasos (tipo de cuenta, datos y acceso) y mensaje final. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             x:Class="Demo.Views.Auth.RegistroPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource LoginBg}">
+
+    <!--
+        Registro en 3 pasos + pantalla de éxito:
+          1. Tipo de cuenta   2. Datos   3. Acceso (correo y contraseña)
+        Cada paso es un panel; el código muestra uno a la vez.
+    -->
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Círculo decorativo -->
+        <Ellipse Grid.RowSpan="3" Fill="{StaticResource LoginCirculo}" WidthRequest="320" HeightRequest="320"
+                 HorizontalOptions="End" VerticalOptions="Start" Margin="0,-120,-140,0" />
+
+        <!-- ===== Cabecera con progreso ===== -->
+        <VerticalStackLayout x:Name="Cabecera" Padding="24,18,24,8" Spacing="14" MaximumWidthRequest="560">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <controls:BotonAtras x:Name="Atras" Tocado="OnAtrasTocado" />
+                <Image Grid.Column="1" Source="rv_logo.png" HeightRequest="54" HorizontalOptions="Center" />
+                <Label Grid.Column="2" x:Name="PasoTexto" Text="Paso 1 de 3" FontFamily="NunitoBold" FontSize="13"
+                       TextColor="#5B6575" VerticalOptions="Center" />
+            </Grid>
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                <BoxView x:Name="Barra1" HeightRequest="6" CornerRadius="3" Color="{StaticResource LoginAzul}" />
+                <BoxView x:Name="Barra2" Grid.Column="1" HeightRequest="6" CornerRadius="3" Color="#A9D9F2" />
+                <BoxView x:Name="Barra3" Grid.Column="2" HeightRequest="6" CornerRadius="3" Color="#A9D9F2" />
+            </Grid>
+            <VerticalStackLayout Spacing="4">
+                <Label x:Name="TituloPaso" Text="Creá tu cuenta" Style="{StaticResource LoginTitulo}" FontSize="28" HorizontalTextAlignment="Start" />
+                <Label x:Name="SubtituloPaso" Text="Elegí el tipo de cuenta que mejor te describe." Style="{StaticResource LoginSubtitulo}"
+                       FontSize="15" HorizontalTextAlignment="Start" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+        <!-- ===== Contenido de cada paso ===== -->
+        <ScrollView Grid.Row="1">
+            <Grid Padding="24,8,24,24" MaximumWidthRequest="560">
+
+                <!-- Paso 1: tipo de cuenta -->
+                <VerticalStackLayout x:Name="Paso1" Spacing="14">
+                    <Border x:Name="CardUsuario" Style="{StaticResource LoginTarjeta}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTipoTapped" CommandParameter="Usuario" />
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="64,*,Auto" ColumnSpacing="14">
+                            <Image Source="rv_reg_usuario.png" WidthRequest="50" VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                                <Label Text="Usuario común" FontFamily="NunitoExtraBold" FontSize="18" TextColor="{StaticResource LoginTexto}" />
+                                <Label Text="Para personas que necesitan asistencia o quieren ayudar." FontSize="14" TextColor="#5B6575" />
+                            </VerticalStackLayout>
+                            <Label x:Name="CheckUsuario" Grid.Column="2" Style="{StaticResource Icono}" FontSize="26" />
+                        </Grid>
+                    </Border>
+
+                    <Border x:Name="CardAsociacion" Style="{StaticResource LoginTarjeta}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTipoTapped" CommandParameter="Asociacion" />
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="64,*,Auto" ColumnSpacing="14">
+                            <Image Source="rv_reg_asoc.png" WidthRequest="50" VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                                <Label Text="Asociación de animales" FontFamily="NunitoExtraBold" FontSize="18" TextColor="{StaticResource LoginTexto}" />
+                                <Label Text="Para organizaciones dedicadas al rescate animal." FontSize="14" TextColor="#5B6575" />
+                            </VerticalStackLayout>
+                            <Label x:Name="CheckAsociacion" Grid.Column="2" Style="{StaticResource Icono}" FontSize="26" />
+                        </Grid>
+                    </Border>
+
+                    <Border x:Name="CardVeterinaria" Style="{StaticResource LoginTarjeta}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTipoTapped" CommandParameter="Veterinaria" />
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="64,*,Auto" ColumnSpacing="14">
+                            <Image Source="rv_reg_vet.png" WidthRequest="50" VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                                <Label Text="Veterinaria" FontFamily="NunitoExtraBold" FontSize="18" TextColor="{StaticResource LoginTexto}" />
+                                <Label Text="Para clínicas y profesionales veterinarios." FontSize="14" TextColor="#5B6575" />
+                            </VerticalStackLayout>
+                            <Label x:Name="CheckVeterinaria" Grid.Column="2" Style="{StaticResource Icono}" FontSize="26" />
+                        </Grid>
+                    </Border>
+
+                </VerticalStackLayout>
+
+                <!-- Paso 2: datos -->
+                <Border x:Name="Paso2" Style="{StaticResource LoginTarjeta}" Padding="20" IsVisible="False" VerticalOptions="Start">
+                    <VerticalStackLayout Spacing="16">
+                        <controls:CampoFormulario x:Name="Nombre" Etiqueta="Nombre" Glifo="&#xE7FD;" Placeholder="Tu nombre"
+                                                  ColorFoco="{StaticResource LoginAzul}" />
+                        <controls:CampoFormulario x:Name="Apellido" Etiqueta="Apellido" Glifo="&#xE7FD;" Placeholder="Tu apellido"
+                                                  ColorFoco="{StaticResource LoginAzul}" />
+                        <controls:CampoFormulario x:Name="Documento" Etiqueta="DNI" Glifo="&#xEA67;" Placeholder="Sin puntos"
+                                                  Teclado="Numeric" ColorFoco="{StaticResource LoginAzul}" />
+                        <controls:CampoFormulario x:Name="Matricula" Etiqueta="Matrícula profesional" Glifo="&#xE8E8;"
+                                                  Placeholder="Ej. MP 12345" ColorFoco="{StaticResource LoginAzul}"
+                                                  Ayuda="La validamos antes de activar la cuenta." IsVisible="False" />
+                        <controls:CampoFormulario x:Name="Telefono" Etiqueta="Teléfono" Glifo="&#xE0CD;" Placeholder="Ej. 11 4555 0101"
+                                                  Teclado="Telephone" ColorFoco="{StaticResource LoginAzul}" />
+                        <controls:CampoFormulario x:Name="Ciudad" Etiqueta="Ciudad" Glifo="&#xE55F;" Placeholder="¿Dónde estás?"
+                                                  ColorFoco="{StaticResource LoginAzul}" Ayuda="Para mostrarte lo que está cerca." />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Paso 3: acceso -->
+                <Border x:Name="Paso3" Style="{StaticResource LoginTarjeta}" Padding="20" IsVisible="False" VerticalOptions="Start">
+                    <VerticalStackLayout Spacing="16">
+                        <controls:CampoFormulario x:Name="Correo" Etiqueta="Correo electrónico" Glifo="&#xE0BE;"
+                                                  Placeholder="tu@correo.com" Teclado="Email" ColorFoco="{StaticResource LoginAzul}" />
+                        <controls:CampoFormulario x:Name="Contraseña" Etiqueta="Contraseña" Glifo="&#xE897;"
+                                                  Placeholder="Creá una contraseña" EsContraseña="True"
+                                                  ColorFoco="{StaticResource LoginAzul}" />
+
+                        <controls:CampoFormulario x:Name="Confirmar" Etiqueta="Repetir contraseña" Glifo="&#xE897;"
+                                                  Placeholder="Escribila de nuevo" EsContraseña="True" ColorFoco="{StaticResource LoginAzul}" />
+
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4">
+                            <Label Grid.Column="1" FontSize="14" TextColor="#5B6575" VerticalOptions="Center">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Al crear tu cuenta aceptás los " />
+                                        <Span Text="Términos y condiciones" FontFamily="NunitoBold" TextColor="{StaticResource LoginAzul}">
+                                            <Span.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnTerminosTapped" />
+                                            </Span.GestureRecognizers>
+                                        </Span>
+                                        <Span Text=" y la " />
+                                        <Span Text="Política de privacidad" FontFamily="NunitoBold" TextColor="{StaticResource LoginAzul}">
+                                            <Span.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnTerminosTapped" />
+                                            </Span.GestureRecognizers>
+                                        </Span>
+                                        <Span Text=" de RescueVet." />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Éxito -->
+                <VerticalStackLayout x:Name="Exito" Spacing="16" IsVisible="False" Padding="0,30,0,0">
+                    <Border WidthRequest="110" HeightRequest="110" StrokeThickness="0" StrokeShape="RoundRectangle 55"
+                            BackgroundColor="{StaticResource Surface}" HorizontalOptions="Center">
+                        <Label Text="&#xE86C;" Style="{StaticResource Icono}" FontSize="72" TextColor="{StaticResource Green}" />
+                    </Border>
+                    <Label Text="¡Tu cuenta está lista!" Style="{StaticResource LoginTitulo}" FontSize="28" />
+                    <Label Text="Ya podés iniciar sesión con tu correo y contraseña." Style="{StaticResource LoginSubtitulo}" FontSize="16" />
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+
+        <!-- ===== Botones ===== -->
+        <VerticalStackLayout Grid.Row="2" Padding="24,10,24,20" Spacing="12" MaximumWidthRequest="560">
+            <Button x:Name="BotonSiguiente" Text="Continuar" Style="{StaticResource LoginBoton}" Clicked="OnSiguienteClicked" />
+            <HorizontalStackLayout x:Name="LinkLogin" HorizontalOptions="Center" Spacing="6">
+                <Label Text="¿Ya tenés una cuenta?" Style="{StaticResource LoginSubtitulo}" FontSize="15" />
+                <Label Text="Iniciar sesión" FontFamily="NunitoExtraBold" FontSize="15" TextColor="{StaticResource LoginAzul}">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnIniciarSesionTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla: lista de veterinarias cercanas, servicios populares y acceso a atención 24/7. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             xmlns:models="clr-namespace:Demo.Models"
+             x:Class="Demo.Views.Veterinarias.VeterinariasPage"
+             Title="Veterinarias"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,16,20,28" Spacing="20">
+
+            <controls:PageHeader Titulo="Veterinarias"
+                                 Subtitulo="Encuentra veterinarias cerca de ti y brinda el mejor cuidado a tu mascota."
+                                 Imagen="rv_ilus_vet.png" />
+
+            <!-- ===== Veterinarias cerca de ti ===== -->
+            <Label Text="Veterinarias cerca de ti" Style="{StaticResource SectionTitle}" Margin="0,4,0,-8" />
+
+            <CarouselView x:Name="Carrusel" HeightRequest="410" Loop="False"
+                          PeekAreaInsets="0,0,110,0" IndicatorView="{x:Reference Indicador}"
+                          Margin="-4,0,-20,0">
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="0"
+                                       SnapPointsType="MandatorySingle" SnapPointsAlignment="Start" />
+                </CarouselView.ItemsLayout>
+                <CarouselView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Veterinaria">
+                        <Border Style="{StaticResource CardFlush}" Margin="4,4,10,14" VerticalOptions="Start">
+                            <Grid RowDefinitions="170,Auto">
+                                <Image Source="{Binding FotoUrl}" Aspect="AspectFill">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnVerDetallesTapped" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+
+                                <Border Style="{StaticResource HeartCircle}" Margin="0,10,10,0">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnFavoritoTapped" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="&#xE87E;" Style="{StaticResource Icono}" FontSize="24" TextColor="{StaticResource TextDark}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding EsFavorito}" Value="True">
+                                                <Setter Property="Text" Value="&#xE87D;" />
+                                                <Setter Property="TextColor" Value="{StaticResource Red}" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </Border>
+
+                                <VerticalStackLayout Grid.Row="1" Padding="14,10,14,14" Spacing="9">
+                                    <Grid ColumnDefinitions="66,*">
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                            <Label Text="{Binding Nombre}" Style="{StaticResource CardTitle}" FontSize="16" />
+                                            <Label Style="{StaticResource SmallText}">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{Binding Distancia}" />
+                                                        <Span Text=" " />
+                                                        <Span Text="&#xE55F;" FontFamily="MaterialIcons" FontSize="14" />
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                    <Label Margin="0,4,0,0">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="&#xE838;" FontFamily="MaterialIcons" FontSize="16" TextColor="{StaticResource Star}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding PuntajeTexto}" FontFamily="NunitoBold" FontSize="14" TextColor="{StaticResource Star}" />
+                                                <Span Text="  " />
+                                                <Span Text="{Binding ResenasTexto}" FontSize="13" TextColor="{StaticResource Muted}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Text="{Binding Descripcion}" Style="{StaticResource CardDesc}" FontSize="14" MaxLines="2" />
+                                    <HorizontalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Etiquetas}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Etiqueta">
+                                                <Border Style="{StaticResource Tag}" BackgroundColor="{Binding ColorFondo}">
+                                                    <Label Text="{Binding Texto}" Style="{StaticResource TagText}" TextColor="{Binding ColorTexto}" />
+                                                </Border>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </HorizontalStackLayout>
+                                    <Border Style="{StaticResource Pill}">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="OnVerDetallesTapped" />
+                                        </Border.GestureRecognizers>
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label Text="Ver detalles" FontFamily="NunitoBold" FontSize="14" VerticalOptions="Center" />
+                                            <Label Grid.Column="1" Text="&#xE5CC;" Style="{StaticResource Icono}" FontSize="22" />
+                                        </Grid>
+                                    </Border>
+                                </VerticalStackLayout>
+
+                                <Image Grid.RowSpan="2" Source="{Binding IconoUrl}" WidthRequest="64" HeightRequest="64"
+                                       HorizontalOptions="Start" VerticalOptions="Start" Margin="8,140,0,0" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
+            <IndicatorView x:Name="Indicador" Margin="0,-12,0,0" />
+
+            <!-- ===== Servicios populares ===== -->
+            <Label Text="Servicios populares" Style="{StaticResource SectionTitle}" Margin="0,0,0,-8" />
+
+            <ScrollView Orientation="Horizontal" Margin="-20,0" Padding="20,4">
+                <HorizontalStackLayout Spacing="10" Padding="0,0,20,8">
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_srv_vacuna.png" HeightRequest="48" /><Label Text="Vacunación" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_srv_consulta.png" HeightRequest="48" /><Label Text="Consultas" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_srv_cirugia.png" HeightRequest="48" /><Label Text="Cirugías" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_srv_odonto.png" HeightRequest="48" /><Label Text="Odontología" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_srv_urgencia.png" HeightRequest="48" /><Label Text="Urgencias" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                    <Border Style="{StaticResource Tile}">
+                        <VerticalStackLayout Spacing="8"><Image Source="rv_srv_lab.png" HeightRequest="48" /><Label Text="Laboratorio" Style="{StaticResource TileText}" FontSize="13" /></VerticalStackLayout>
+                    </Border>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <!-- ===== Emergencia 24/7 ===== -->
+            <Border Style="{StaticResource Banner}" Padding="0" BackgroundColor="#F0EDFA">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Spacing="6" Padding="20,20,0,20" VerticalOptions="Center">
+                        <Label Text="¿Necesitas atención de emergencia?" FontFamily="NunitoExtraBold" FontSize="20" />
+                        <Label Text="Encuentra veterinarias con atención 24/7 cerca de ti." Style="{StaticResource CardDesc}" FontSize="14" />
+                        <Button Text="Ver veterinarias 24/7" HorizontalOptions="Start" Margin="0,8,0,0"
+                                ContentLayout="Right,8" Clicked="OnVer24Clicked">
+                            <Button.ImageSource>
+                                <FontImageSource Glyph="&#xE5C8;" FontFamily="MaterialIcons" Color="White" Size="20" />
+                            </Button.ImageSource>
+                        </Button>
+                    </VerticalStackLayout>
+                    <Image Grid.Column="1" Source="rv_vet_banner.png" WidthRequest="150" Aspect="AspectFit" VerticalOptions="End" />
+                </Grid>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

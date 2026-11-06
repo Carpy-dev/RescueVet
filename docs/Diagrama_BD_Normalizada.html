@@ -1,0 +1,122 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><title>DER RescueVet</title>
+<style>html{overflow:scroll;background:#fff}body{margin:0;background:#fff;width:3000px;height:2020px}svg{display:block}text{font-family:"Segoe UI",Arial,sans-serif}</style></head>
+<body><svg id="d" xmlns="http://www.w3.org/2000/svg" width="3000" height="2020" viewBox="0 0 3000 2020"></svg>
+<script>
+const W=300,H=24,HEAD=36,LINE='#44546a';
+const G={c:'#1f3864',d:'#2e75b6',s:'#c55a11',a:'#7f6000',m:'#2e7d32',k:'#6a3d9a',f:'#a61e4d'};
+const T=[
+ ['rol',900,60,G.c,'PK:id_rol,nombre*'],
+ ['usuario',1300,60,G.c,'PK:id_usuario,FK:id_rol,email*,password_hash,activo,fecha_registro'],
+ ['solicitante',1300,330,G.c,'PK:id_solicitante,FK:id_usuario*,nombre,apellido?,documento?*,telefono?,ciudad?'],
+ ['favorito_asociacion',40,60,G.f,'PK:FK:id_usuario,PK:FK:id_asociacion'],
+ ['asociacion_necesidad',40,190,G.d,'PK:id_necesidad,FK:id_asociacion,texto'],
+ ['asociacion',40,350,G.d,'PK:id_asociacion,FK:id_usuario?*,nombre,F:id_foto?,F:id_icono?,distancia?,descripcion?,sobre_nosotros?,direccion?,horario?,telefono?,email_contacto?,cuit?,ciudad?,rescatados,adoptados,activa'],
+ ['asociacion_etiqueta',40,840,G.d,'PK:FK:id_asociacion,PK:FK:id_etiqueta'],
+ ['etiqueta',40,960,G.d,'PK:id_etiqueta,texto,color_texto,color_fondo'],
+ ['veterinaria_etiqueta',40,1130,G.d,'PK:FK:id_etiqueta,PK:FK:id_veterinaria'],
+ ['veterinaria',40,1250,G.d,'PK:id_veterinaria,FK:id_usuario?*,nombre,F:id_foto?,F:id_icono?,distancia?,puntaje,resenas,descripcion?,abierta_24h,sobre_nosotros?,direccion?,horario?,telefono?,email_contacto?,cuit?,matricula?,ciudad?,disponible'],
+ ['servicio',40,1800,G.d,'PK:id_servicio,FK:id_veterinaria,nombre,precio'],
+ ['favorito_veterinaria',440,1270,G.f,'PK:FK:id_usuario,PK:FK:id_veterinaria'],
+ ['campana',440,660,G.k,'PK:id_campana,FK:id_asociacion,F:id_foto?,titulo,detalle?,monto_recaudado,porcentaje'],
+ ['novedad',440,1000,G.k,'PK:id_novedad,F:id_foto?,titulo,descripcion?,detalle?'],
+ ['estado_solicitud',900,640,G.s,'PK:id_estado,nombre*,descripcion?'],
+ ['categoria_solicitud',900,800,G.s,'PK:id_categoria,nombre*'],
+ ['historial_estado',900,930,G.s,'PK:id_historial,FK:id_solicitud,FK:id_estado,FK:id_usuario,fecha_hora,observacion?'],
+ ['solicitud',1300,640,G.s,'PK:id_solicitud,FK:id_solicitante,FK:id_animal,FK:id_asociacion?,FK:id_estado,FK:id_categoria,F:id_foto?,titulo,descripcion?,historia?,ubicacion?,prioridad?,telefono_contacto?,fecha_creacion'],
+ ['solicitud_necesidad',1300,1090,G.s,'PK:id_necesidad,FK:id_solicitud,texto'],
+ ['favorito_solicitud',1700,1100,G.f,'PK:FK:id_usuario,PK:FK:id_solicitud'],
+ ['asignacion',1300,1320,G.a,'PK:id_asignacion,FK:id_solicitud,FK:id_veterinaria,fecha_asignacion,aceptada?,motivo_rechazo?'],
+ ['atencion',1300,1560,G.a,'PK:id_atencion,FK:id_asignacion*,diagnostico?,tratamiento?,observaciones?,costo,fecha_atencion'],
+ ['animal',1750,560,G.s,'PK:id_animal,nombre?,especie?,raza?,edad_aproximada?,sexo?,estado_general?'],
+ ['mascota',2150,560,G.m,'PK:id_mascota,FK:id_animal*,FK:id_usuario,F:id_foto?,rango_peso?,estado_peso?,estado_vacunas?,alergias?'],
+ ['mascota_consejo',2620,60,G.m,'PK:id_consejo,FK:id_mascota,texto'],
+ ['mascota_galeria',2620,200,G.m,'PK:FK:id_mascota,PK:F:id_foto,orden'],
+ ['recordatorio',2620,350,G.m,'PK:id_recordatorio,FK:id_mascota,F:id_foto?,titulo,frecuencia?,fecha,color_texto,color_fondo'],
+ ['registro_medico',2620,620,G.m,'PK:id_registro,FK:id_mascota,fecha,titulo,detalle?,lugar?,glifo,color'],
+ ['peso',2620,890,G.m,'PK:id_peso,FK:id_mascota,fecha,kg'],
+ ['foto',2150,1000,G.k,'PK:id_foto,nombre*,content_type,datos'],
+];
+let o='';
+const X=(s)=>s.replace(/&/g,'&amp;');
+const t=(x,y,v,a='')=>`<text x="${x}" y="${y}" ${a}>${X(v)}</text>`;
+
+// Relación: puntos desde el hijo (N) hasta el padre (1). uno=true dibuja 1 a 0..1
+function R(p,uno,et){
+ let d='M'+p.map(q=>q.join(' ')).join(' L');
+ o+=`<path d="${d}" fill="none" stroke="${LINE}" stroke-width="2.5"/>`;
+ const [a,b]=[p[0],p[1]],l=Math.hypot(b[0]-a[0],b[1]-a[1])||1,ux=(b[0]-a[0])/l,uy=(b[1]-a[1])/l;
+ if(uno){ o+=`<circle cx="${a[0]+ux*8}" cy="${a[1]+uy*8}" r="5" fill="#fff" stroke="${LINE}" stroke-width="2.2"/>`; o+=`<line x1="${a[0]+ux*17-uy*9}" y1="${a[1]+uy*17+ux*9}" x2="${a[0]+ux*17+uy*9}" y2="${a[1]+uy*17-ux*9}" stroke="${LINE}" stroke-width="3"/>`; }
+ else { const bx=a[0]+ux*16,by=a[1]+uy*16; o+=`<line x1="${bx}" y1="${by}" x2="${a[0]-uy*10}" y2="${a[1]+ux*10}" stroke="${LINE}" stroke-width="2.5"/><line x1="${bx}" y1="${by}" x2="${a[0]+uy*10}" y2="${a[1]-ux*10}" stroke="${LINE}" stroke-width="2.5"/>`; }
+ const c=p[p.length-1],d2=p[p.length-2],m=Math.hypot(c[0]-d2[0],c[1]-d2[1])||1,vx=(c[0]-d2[0])/m,vy=(c[1]-d2[1])/m;
+ o+=`<line x1="${c[0]-vx*9-vy*9}" y1="${c[1]-vy*9+vx*9}" x2="${c[0]-vx*9+vy*9}" y2="${c[1]-vy*9-vx*9}" stroke="${LINE}" stroke-width="3"/>`;
+}
+// ---- Cuentas
+R([[1300,100],[1200,100]]);
+R([[1450,330],[1450,240]],true);
+// ---- Solicitud
+R([[1450,640],[1450,534]]);
+R([[1300,690],[1200,690]]);
+R([[1300,840],[1200,840]]);
+R([[1200,1000],[1300,1000]]);
+R([[900,1000],[880,1000],[880,700],[900,700]]);
+R([[900,1050],[860,1050],[860,165],[1300,165]]);
+R([[1450,1090],[1450,1012]]);
+R([[1600,1380],[1640,1380],[1640,900],[1600,900]]);
+R([[1700,1150],[1670,1150],[1670,960],[1600,960]]);
+R([[2000,1150],[2080,1150],[2080,190],[1600,190]]);
+R([[1450,1560],[1450,1500]],true);
+R([[1600,690],[1750,690]]);
+R([[1300,730],[1260,730],[1260,610],[340,610]]);
+// ---- Asociación
+R([[190,190+108],[190,350]]);
+R([[190,840],[190,794]]);
+R([[190,924],[190,960]]);
+R([[440,740],[340,740]]);
+R([[340,400],[800,400],[800,205],[1300,205]],true);
+R([[40,110],[10,110],[10,600],[40,600]]);
+R([[340,100],[420,100],[420,30],[1450,30],[1450,60]]);
+// ---- Veterinaria
+R([[190,1214],[190,1250]]);
+R([[190,1130],[190,1092]]);
+R([[190,1800],[190,1742]]);
+R([[440,1320],[340,1320]]);
+R([[1300,1420],[340,1420]]);
+R([[740,1300],[780,1300],[780,185],[1300,185]]);
+R([[340,1280],[410,1280],[410,1180],[820,1180],[820,225],[1300,225]],true);
+// ---- Mascota
+R([[2300,560],[2300,130],[1600,130]]);
+R([[2150,690],[2050,690]],true);
+[110,235,450,720,940].forEach(y=>R([[2620,y],[2530,y],[2530,650],[2450,650]]));
+
+// ---- Tablas
+for(const [n,x,y,c,cols] of T){
+ const L=cols.split(','),h=HEAD+L.length*H;
+ o+=`<rect x="${x}" y="${y}" width="${W}" height="${h}" fill="#fff" stroke="${c}" stroke-width="2.5"/><rect x="${x}" y="${y}" width="${W}" height="${HEAD}" fill="${c}"/>`;
+ o+=t(x+W/2,y+25,n,`font-size="20" font-weight="700" fill="#fff" text-anchor="middle"`);
+ L.forEach((s,i)=>{const ry=y+HEAD+i*H;let tag='',col='#111',w='400',u=s;
+  const pk=u.startsWith('PK:');if(pk)u=u.slice(3);
+  const fk=u.startsWith('FK:'),ff=u.startsWith('F:');if(fk)u=u.slice(3);if(ff)u=u.slice(2);
+  if(pk)o+=`<rect x="${x+2}" y="${ry}" width="${W-4}" height="${H}" fill="#fff2cc"/>`;
+  tag=pk&&(fk||ff)?'PK FK':pk?'PK':(fk||ff)?'FK':'';
+  const opc=u.includes('?'),uq=u.includes('*');u=u.replace('?','').replace('*','');
+  if(ff)col='#c2185b';if(pk)w='700';
+  if(tag)o+=t(x+8,ry+17,tag,`font-size="13" font-weight="700" fill="${ff?'#c2185b':pk?'#b8860b':'#2f5597'}"`);
+  o+=t(x+60,ry+17,u+(ff?' → foto':'')+(uq?' (único)':'')+(opc?' (opc.)':''),`font-size="16" font-weight="${w}" fill="${col}"`);
+ });
+}
+// ---- Título y referencias
+o+=t(1950,1330,'RescueVet_Normalizada',`font-size="38" font-weight="700" fill="#1f3864"`);
+o+=t(1950,1368,'30 tablas · 46 claves foráneas · SQL Server Express',`font-size="22" fill="#444"`);
+o+=`<rect x="1950" y="1395" width="1010" height="580" fill="#f7f8fb" stroke="#c9d0dc" stroke-width="2"/>`;
+o+=t(1975,1435,'Referencias',`font-size="26" font-weight="700" fill="#1f3864"`);
+const yr=1465;o+=`<line x1="1980" y1="${yr+5}" x2="2060" y2="${yr+5}" stroke="${LINE}" stroke-width="2.5"/><line x1="2060" y1="${yr-4}" x2="2060" y2="${yr+14}" stroke="${LINE}" stroke-width="3"/><path d="M1996 ${yr+5} L1980 ${yr-5} M1996 ${yr+5} L1980 ${yr+15}" stroke="${LINE}" stroke-width="2.5"/>`+t(2080,yr+11,'Relación de N a 1: la pata de gallo está en la tabla hija',`font-size="20"`);
+const y2=yr+45;o+=`<line x1="1980" y1="${y2+5}" x2="2060" y2="${y2+5}" stroke="${LINE}" stroke-width="2.5"/><circle cx="1988" cy="${y2+5}" r="5" fill="#fff" stroke="${LINE}" stroke-width="2.2"/><line x1="1998" y1="${y2-4}" x2="1998" y2="${y2+14}" stroke="${LINE}" stroke-width="3"/><line x1="2060" y1="${y2-4}" x2="2060" y2="${y2+14}" stroke="${LINE}" stroke-width="3"/>`+t(2080,y2+11,'Relación de 1 a 0..1: a lo sumo una fila relacionada',`font-size="20"`);
+o+=t(1980,y2+58,'PK',`font-size="17" font-weight="700" fill="#b8860b"`)+t(2020,y2+58,'clave primaria',`font-size="20"`);
+o+=t(2230,y2+58,'FK',`font-size="17" font-weight="700" fill="#2f5597"`)+t(2270,y2+58,'clave foránea',`font-size="20"`);
+o+=t(2480,y2+58,'FK',`font-size="17" font-weight="700" fill="#c2185b"`)+t(2520,y2+58,'clave foránea a foto',`font-size="20"`);
+o+=t(1980,y2+98,'Las 10 claves hacia foto no se dibujan como línea, para que se pueda leer: se marcan en color',`font-size="19" fill="#333"`);
+o+=t(1980,y2+125,'dentro de cada tabla (asociacion, veterinaria, campana, novedad, solicitud, mascota,',`font-size="19" fill="#333"`);
+o+=t(1980,y2+152,'mascota_galeria y recordatorio).',`font-size="19" fill="#333"`);
+[['Cuentas',G.c],['Directorio',G.d],['Solicitudes',G.s],['Atención (sin uso en la app aún)',G.a],['Mi Mascota',G.m],['Contenido e imágenes',G.k],['Favoritos por cuenta',G.f]].forEach((g,i)=>{const yy=y2+190+i*38;o+=`<rect x="1980" y="${yy}" width="30" height="24" fill="${g[1]}"/>`+t(2022,yy+19,g[0],`font-size="20"`);});
+document.getElementById('d').innerHTML=o;
+</script></body></html>

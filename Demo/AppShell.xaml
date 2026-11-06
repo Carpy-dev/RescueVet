@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Mapa de navegación: el login, las pestañas de los usuarios (//app) y las de las asociaciones (//panel). -->
+<Shell
+    x:Class="Demo.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:auth="clr-namespace:Demo.Views.Auth"
+    xmlns:inicio="clr-namespace:Demo.Views.Inicio"
+    xmlns:emergencia="clr-namespace:Demo.Views.Emergencia"
+    xmlns:donaciones="clr-namespace:Demo.Views.Donaciones"
+    xmlns:favoritos="clr-namespace:Demo.Views.Favoritos"
+    xmlns:casos="clr-namespace:Demo.Views.Casos"
+    Title="RescueVet"
+    FlyoutBehavior="Disabled">
+
+    <!--
+        Navegación de la app:
+          //login                -> ingreso (sin barra de pestañas)
+          //login/RegistroPage   -> crear cuenta
+          //app/...              -> usuarios: Inicio · Ayuda · Donación · Favoritos
+          //panel/...            -> asociaciones: Casos · Configuración
+        Las demás pantallas (listas, detalles y sub pantallas) se registran en AppShell.xaml.cs,
+        se apilan sobre la pestaña actual y tienen botón "‹" para volver.
+    -->
+
+    <ShellContent
+        Title="Ingresar"
+        Route="login"
+        ContentTemplate="{DataTemplate auth:LoginPage}" />
+
+    <TabBar Route="app">
+
+        <Tab Title="Inicio" Route="inicio">
+            <Tab.Icon>
+                <FontImageSource Glyph="&#xE88A;" FontFamily="MaterialIcons" Size="26" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate inicio:HomePage}" />
+        </Tab>
+
+        <Tab Title="Ayuda" Route="ayuda">
+            <Tab.Icon>
+                <FontImageSource Glyph="&#xEBF7;" FontFamily="MaterialIcons" Size="26" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate emergencia:EmergenciaPage}" />
+        </Tab>
+
+        <Tab Title="Donación" Route="donacion">
+            <Tab.Icon>
+                <FontImageSource Glyph="&#xEA70;" FontFamily="MaterialIcons" Size="26" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate donaciones:DonacionesPage}" />
+        </Tab>
+
+        <Tab Title="Favoritos" Route="favoritos">
+            <Tab.Icon>
+                <FontImageSource Glyph="&#xE83A;" FontFamily="MaterialIcons" Size="26" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate favoritos:FavoritosPage}" />
+        </Tab>
+
+    </TabBar>
+
+    <TabBar Route="panel">
+
+        <Tab Title="Casos" Route="casos">
+            <Tab.Icon>
+                <FontImageSource Glyph="&#xE91D;" FontFamily="MaterialIcons" Size="26" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate casos:CasosPage}" />
+        </Tab>
+
+        <Tab Title="Configuración" Route="configuracion">
+            <Tab.Icon>
+                <FontImageSource Glyph="&#xE8B8;" FontFamily="MaterialIcons" Size="26" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate inicio:ConfiguracionPage}" />
+        </Tab>
+
+    </TabBar>
+
+</Shell>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Pantalla: resumen de la mascota, accesos, recordatorios, galería y consejos. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Demo.Controls"
+             xmlns:models="clr-namespace:Demo.Models"
+             x:Class="Demo.Views.MiMascota.MiMascotaPage"
+             x:DataType="models:Mascota"
+             Title="Mi Mascota"
+             Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20,16,20,28" Spacing="18">
+
+            <controls:PageHeader Titulo="Mi Mascota"
+                                 Subtitulo="Todo lo que necesitas para cuidar a tu mejor amigo"
+                                 Imagen="{Binding FotoUrl}" AnchoImagen="150" />
+
+            <!-- ===== Cuenta sin mascotas ===== -->
+            <VerticalStackLayout x:Name="SinMascota" Spacing="12" IsVisible="False">
+                <Label x:Name="MensajeSinMascota" Style="{StaticResource CardDesc}" FontSize="15" />
+                <Button x:Name="BotonAgregar" Text="Agregar mascota" Style="{StaticResource PrimaryButton}" Clicked="OnAgregarClicked" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout x:Name="ContenidoMascota" Spacing="18">
+
+            <!-- ===== Datos de la mascota ===== -->
+            <Border Style="{StaticResource Banner}" Padding="20,16">
+                <Grid ColumnDefinitions="*,1,Auto" ColumnSpacing="16">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Style="{StaticResource PageTitle}" FontSize="28">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnEditarTapped" />
+                            </Label.GestureRecognizers>
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Nombre}" FontFamily="NunitoExtraBold" />
+                                    <Span Text=" " />
+                                    <Span Text="&#xE3C9;" FontFamily="MaterialIcons" FontSize="20" TextColor="{StaticResource Primary}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Text="{Binding Raza}" Style="{StaticResource PageSubtitle}" FontSize="16" />
+                        <HorizontalStackLayout Spacing="14" Margin="0,2,0,0">
+                            <Label Style="{StaticResource SmallText}" FontSize="14">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="&#xE7E9;" FontFamily="MaterialIcons" FontSize="16" TextColor="{StaticResource Primary}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding Edad}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label Style="{StaticResource SmallText}" FontSize="14">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="&#xE58E;" FontFamily="MaterialIcons" FontSize="16" TextColor="{StaticResource Primary}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding Sexo}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                    <BoxView Grid.Column="1" Color="#E2DCF5" WidthRequest="1" />
+                    <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="2" VerticalOptions="Center">
+                        <Label Text="Peso" Style="{StaticResource SmallText}" FontSize="13" />
+                        <Label Grid.Row="1" Text="{Binding PesoActual}" FontFamily="NunitoBold" FontSize="16" />
+                        <Label Grid.Row="2" Text="Última visita" Style="{StaticResource SmallText}" FontSize="13" Margin="0,8,0,0" />
+                        <Label Grid.Row="3" Text="{Binding UltimaVisita}" FontFamily="NunitoBold" FontSize="16" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- ===== Accesos ===== -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Border Style="{StaticResource ColorTile}" BackgroundColor="#EFFBF3">
+                    <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnAccesoTapped" CommandParameter="HistorialMedicoPage" /></Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Image Source="rv_masc_ic_historial.png" HeightRequest="44" />
+                        <Label Text="Historial médico" Style="{StaticResource TileText}" />
+                        <Label Text="Ver registros" Style="{StaticResource SmallText}" FontSize="11" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource ColorTile}" BackgroundColor="#FFF7EA">
+                    <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnAccesoTapped" CommandParameter="RecordatoriosPage" /></Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Image Source="rv_masc_ic_record.png" HeightRequest="44" />
+                        <Label Text="Recordatorios" Style="{StaticResource TileText}" />
+                        <Label Text="{Binding RecordatoriosTexto}" Style="{StaticResource SmallText}" FontSize="11" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource ColorTile}" BackgroundColor="#FEF1F4">
+                    <Border.GestureRecognizers><TapGestureRecognizer Tapped="OnAccesoTapped" CommandParameter="CrecimientoPage" /></Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Image Source="rv_masc_ic_crec.png" HeightRequest="44" />
+                        <Label Text="Crecimiento" Style="{StaticResource TileText}" />
+                        <Label Text="Ver progreso" Style="{StaticResource SmallText}" FontSize="11" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- ===== Recordatorios ===== -->
+            <Border Style="{StaticResource Card}" Padding="16,14">
+                <VerticalStackLayout>
+                    <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,8">
+                        <Label Text="Recordatorios" Style="{StaticResource SectionTitle}" FontSize="17" />
+                        <Label Grid.Column="1" Text="Ver todos" Style="{StaticResource LinkLabel}">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnAccesoTapped" CommandParameter="RecordatoriosPage" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Recordatorios}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:Recordatorio">
+                                <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="12" Padding="0,10">
+                                    <Image Source="{Binding ImagenUrl}" WidthRequest="56" HeightRequest="52" />
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="{Binding Titulo}" FontFamily="NunitoBold" FontSize="16" />
+                                        <Label Text="{Binding Frecuencia}" Style="{StaticResource SmallText}" FontSize="13" />
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="2" VerticalOptions="Center" Spacing="4">
+                                        <Border Style="{StaticResource Tag}" BackgroundColor="{Binding ColorFondo}" HorizontalOptions="End">
+                                            <Label Text="{Binding Falta}" Style="{StaticResource TagText}" TextColor="{Binding ColorTexto}" />
+                                        </Border>
+                                        <Label Text="{Binding FechaTexto}" Style="{StaticResource SmallText}" HorizontalOptions="End" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="3" Text="&#xE5CC;" Style="{StaticResource Icono}" FontSize="24" />
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ===== Galería ===== -->
+            <Grid ColumnDefinitions="*,Auto" Margin="0,4,0,-6">
+                <Label Text="Galería" Style="{StaticResource SectionTitle}" />
+                <Label Grid.Column="1" Text="Ver todas" Style="{StaticResource LinkLabel}" />
+            </Grid>
+
+            <ScrollView Orientation="Horizontal" Margin="-20,0" Padding="20,0">
+                <HorizontalStackLayout Spacing="12" Padding="0,0,20,0" BindableLayout.ItemsSource="{Binding GaleriaUrls}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <Border StrokeThickness="0" StrokeShape="RoundRectangle 18">
+                                <Image Source="{Binding .}" WidthRequest="150" HeightRequest="160" Aspect="AspectFill" />
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <!-- ===== Consejos ===== -->
+            <Border Style="{StaticResource Banner}" Padding="16">
+                <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="14" RowSpacing="12">
+                    <Image Source="rv_bombilla.png" WidthRequest="64" HeightRequest="64" VerticalOptions="Start" />
+                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                        <Label Text="Consejos personalizados" FontFamily="NunitoExtraBold" FontSize="17" />
+                        <Label Text="{Binding ConsejosTexto}" Style="{StaticResource CardDesc}" FontSize="14" />
+                    </VerticalStackLayout>
+                    <Button Grid.Row="1" Grid.Column="1" Text="Ver consejos" HorizontalOptions="Start"
+                            Clicked="OnConsejosClicked" />
+                </Grid>
+            </Border>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
